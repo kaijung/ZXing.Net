@@ -23,7 +23,6 @@ namespace TestZxing
             Bitmap image = null;
             try
             {
-
                 image = (Bitmap)Bitmap.FromFile(args[0]);
             }
             catch (Exception)
@@ -55,10 +54,17 @@ namespace TestZxing
 
                 //var result = barcodeReader.Decode(c, W, H);
                 // decode the current frame
+                LuminanceSource source;
+
+                source = new BitmapLuminanceSource(image);
 
                 var reader = new BarcodeReader { AutoRotate = true };
-
+                
                 var result = reader.Decode(rgb, W, H, RGBLuminanceSource.BitmapFormat.RGB24);
+
+                /*
+                var result = reader.Decode(source);
+                */
                 if (result != null)
                 {
 
