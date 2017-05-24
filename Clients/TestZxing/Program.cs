@@ -1,10 +1,10 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Drawing;
 using ZXing;
 using ZXing.Client.Result;
-
+using System.Text;
 
 namespace TestZxing
 {
@@ -37,34 +37,42 @@ namespace TestZxing
             {
                 W = image.Width;
                 H = image.Height;
-                byte[] rgb = new byte[W * H * 3];
+                byte[] argb = new byte[W * H * 3];
                 int i = 0;
-                for (int x = 0; x < W; x++)
-                {
-                    for (int y = 0; y < H; y++)
+				for (int y = 0; y < H; y++)
+				{
+                    for (int x = 0; x < W; x++)
                     {
-                        rgb[i] = image.GetPixel(x, y).R;
-                        i++;
-                        rgb[i] = image.GetPixel(x, y).G;
-                        i++;
-                        rgb[i] = image.GetPixel(x, y).B;
+						//argb[i] = image.GetPixel(x, y).A;
+						//i++;
+						argb[i] = image.GetPixel(x, y).R;
+						i++;
+						argb[i] = image.GetPixel(x, y).G;
+						i++;
+						argb[i] = image.GetPixel(x, y).B;
                         i++;
                     }
                 }
-
+				//Console.WriteLine(BitConverter.ToString(argb));
                 //var result = barcodeReader.Decode(c, W, H);
                 // decode the current frame
-                LuminanceSource source;
+                //LuminanceSource source;
 
-                source = new BitmapLuminanceSource(image);
+                //source = new BitmapLuminanceSource(image);
+
 
                 var reader = new BarcodeReader { AutoRotate = true };
-                
-                var result = reader.Decode(rgb, W, H, RGBLuminanceSource.BitmapFormat.RGB24);
 
-                /*
-                var result = reader.Decode(source);
-                */
+                RGBLuminanceSource rgbSource = new RGBLuminanceSource(argb, W, H, RGBLuminanceSource.BitmapFormat.RGB24);
+
+				//var result = reader.Decode(luminanceSource);
+				//var result = reader.Decode(argb, W, H, RGBLuminanceSource.BitmapFormat.ARGB32);
+				//Console.WriteLine("RGB:"+BitConverter.ToString(rgbSource.Matrix));
+
+				//Console.WriteLine("Bitmap:"+BitConverter.ToString(source.Matrix));
+
+                var result = reader.Decode(rgbSource);
+                //result = reader.Decode(source);
                 if (result != null)
                 {
 
