@@ -328,12 +328,12 @@ namespace ZXing
          for (int rgbIndex = 0, luminanceIndex = 0; rgbIndex < rgbRawBytes.Length && luminanceIndex < luminances.Length; luminanceIndex++)
          {
             // Calculate luminance cheaply, favoring green.
-            var alpha = rgbRawBytes[rgbIndex++];
-            var r = rgbRawBytes[rgbIndex++];
-            var g = rgbRawBytes[rgbIndex++];
-            var b = rgbRawBytes[rgbIndex++];
+            byte alpha = rgbRawBytes[rgbIndex++];
+            byte r = rgbRawBytes[rgbIndex++];
+            byte g = rgbRawBytes[rgbIndex++];
+            byte b = rgbRawBytes[rgbIndex++];
             var luminance = (byte)((RChannelWeight * r + GChannelWeight * g + BChannelWeight * b) >> ChannelWeight);
-            luminances[luminanceIndex] = (byte)(((luminance * alpha) >> 8) + (255 * (255 - alpha) >> 8));
+            luminances[luminanceIndex] = (byte)(((luminance * alpha) >> 8) + (255 * (255 - alpha) >> 8) + 1);
          }
       }
 

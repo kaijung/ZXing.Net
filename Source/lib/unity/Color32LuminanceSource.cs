@@ -62,11 +62,13 @@ namespace ZXing
             for (var x = 0; x < Width; x++)
             {
                var color32 = color32s[y*Width + x];
-               // Calculate luminance cheaply, favoring green.
-               luminances[z++] = (byte)((
-                  color32.r +
-                  color32.g + color32.g +
-                  color32.b) >> 2);
+				// Calculate luminance cheaply, favoring green.
+				//luminances[z++] = (byte)((
+				//   color32.r +
+				//   color32.g + color32.g +
+				//   color32.b) >> 2);
+				luminances[z] = (byte)((RChannelWeight * color32.r + GChannelWeight * color32.g + BChannelWeight * color32.b) >> ChannelWeight);
+                z++;
             }
          }
       }
