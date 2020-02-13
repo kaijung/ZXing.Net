@@ -83,8 +83,9 @@ namespace ZXing.QrCode
          else
          {
             var detectorResult = new Detector(image.BlackMatrix).detect(hints);
-            if (detectorResult == null)
+            if (detectorResult == null) {
                return null;
+			}
             decoderResult = decoder.decode(detectorResult.Bits, hints);
             points = detectorResult.Points;
          }

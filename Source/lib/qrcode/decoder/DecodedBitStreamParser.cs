@@ -124,14 +124,23 @@ namespace ZXing.QrCode.Internal
                            if (!decodeAlphanumericSegment(bits, result, count, fc1InEffect))
                               return null;
                            break;
+#if UNITY
+						case Mode.Names.KANJI:
                         case Mode.Names.BYTE:
                            if (!decodeByteSegment(bits, result, count, currentCharacterSetECI, byteSegments, hints))
                               return null;
                            break;
-                        case Mode.Names.KANJI:
-                           if (!decodeKanjiSegment(bits, result, count))
-                              return null;
-                           break;
+#else
+						case Mode.Names.BYTE:
+							if (!decodeByteSegment(bits, result, count, currentCharacterSetECI, byteSegments, hints))
+								return null;
+							break;
+							
+						case Mode.Names.KANJI:
+							if (!decodeKanjiSegment(bits, result, count))
+								return null;
+							break;						
+#endif
                         default:
                            return null;
                      }
